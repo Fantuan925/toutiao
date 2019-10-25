@@ -1,5 +1,8 @@
 <template>
-  <div id="app">111</div>
+  <div id="app">
+    <!-- login指定组件渲染的位置：App.vue -->
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
