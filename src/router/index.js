@@ -6,10 +6,16 @@ Vue.use(VueRouter)
 
 // 配置规则：router/index.js
 const router = new VueRouter({
+  mode: 'history',
   // 路由规则选项 routes  若干规则
   routes: [{
+    path: '/',
+    redirect: '/login'
+  },
+  {
     path: '/login',
     component: Login
-  }]
+  }
+  ]
 })
 export default router
