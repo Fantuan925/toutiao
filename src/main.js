@@ -3,7 +3,10 @@ import App from './App.vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from '@/router'
+// src/main.js 进行挂载
+import axios from '@/api'
 
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
