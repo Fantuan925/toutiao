@@ -6,7 +6,7 @@
       <div class="logo" :class="{smallLogo:!isChange}"></div>
       <!-- 导航菜单 -->
       <el-menu
-        default-active="/"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -53,15 +53,17 @@
         <!-- 文字 -->
         <span class="text">中国大芒果科技集团</span>
         <!-- 下拉菜单组件 -->
-        <el-dropdown class="dropdown">
+        <el-dropdown class="dropdown" @command="btnClick">
           <span class="el-dropdown-link">
-            <img class="headIcon" src="../../assets/avatar1.jpg" alt />
-            <span class="userName">用户名称</span>
+            <img class="headIcon" :src="userInfo.photo" alt />
+            <span class="userName">{{userInfo.name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <!-- 跳转个人设置 -->
+            <el-dropdown-item icon="el-icon-setting" command="setting">个人设置</el-dropdown-item>
+            <!-- 清除本地存储的用户信息 -->
+            <el-dropdown-item icon="el-icon-unlock" command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -73,15 +75,34 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     return {
-      isChange: true
+      isChange: true,
+      userInfo: {}
     }
+  },
+  created () {
+    // 设置用户信息
+    const user = local.getUser() || {}
+    this.userInfo.name = user.name
+    this.userInfo.photo = user.photo
   },
   methods: {
     toggleMenu () {
       this.isChange = !this.isChange
+    },
+    setting () {
+      this.$router.push('/article')
+    },
+    logout () {
+      // 清除本地用户信息
+      local.delUser()
+      this.$router.push('/login')
+    },
+    btnClick (command) {
+      this[command]()
     }
   }
 }
@@ -121,7 +142,7 @@ export default {
       vertical-align: middle;
     }
     .userName {
-      font-size: 20px;
+      font-size: 15px;
       color: #fff;
       font-weight: 700;
       vertical-align: middle;
